@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Buy Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 10px 15px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 20px; margin: 0; }
+    nav a {
+      color: #fff;
+      margin: 5px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    nav a:hover { text-decoration: underline; }
+
+    .search-bar input {
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+    }
+
+    .wishlist-counter, .cart-counter {
+      background: #ff1493;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    main { padding: 15px; }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+      overflow: hidden;
+    }
+    .card:hover { transform: scale(1.03); }
+    .card img { width: 100%; height: 220px; object-fit: cover; }
+
+    .btn { padding: 6px 10px; border-radius: 6px; cursor: pointer; border: none; margin: 3px; font-size: 13px; }
+    .btn.buy { background: #28a745; color: white; }
+    .btn.wishlist, .btn.addcart { background: #ff69b4; color: white; }
+    .btn.buy:hover { background: #1e7e34; }
+    .btn.wishlist:hover, .btn.addcart:hover { background: #ff1493; }
+
+    #about-page, #service-page, #contact-page, #cart-page { display: none; }
+
+    @media (max-width: 600px) {
+      header { flex-direction: column; align-items: flex-start; }
+      nav a { font-size: 13px; }
+      .product-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+      .search-bar { width: 100%; margin-top: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Meesho Style Demo</h1>
+    <nav>
+      <a href="#" onclick="showSection('home')">Home</a>
+      <a href="#" onclick="showSection('about')">About</a>
+      <a href="#" onclick="showSection('service')">Service</a>
+      <a href="#" onclick="showSection('cart')">Cart</a>
+      <a href="#" onclick="showSection('contact')">Contact</a>
+    </nav>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search..." oninput="filterProducts()" />
+    </div>
+    <div>
+      <span class="wishlist-counter" id="wishlistCount">Wishlist: 0</span>
+      <span class="cart-counter" id="cartCount">Cart: 0</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 🏠 Home -->
+    <section id="home">
+      <h2>Welcome!</h2>
+      <p>Visit official Meesho website: 
+        <a href="https://www.meesho.com" target="_blank">www.meesho.com</a>
+      </p>
+      <div class="product-grid" id="productGrid">
+
+        <!-- 🛍️ 15 Products -->
+        <div class="card" data-title="Trendy Dress">
+          <img src="https://images.meesho.com/images/products/506612167/0cwwh_512.avif" alt="Trendy Dress">
+          <h3>Trendy Dress</h3><p>₹404</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/fency-anarkali-gown-for-women/p/8dmgg7')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Hair Clips">
+          <img src="https://images.meesho.com/images/products/254244347/kdtie_512.avif" alt="hair clips">
+          <h3>Hair Clips</h3><p>₹104</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/hair-clips/p/47dc6z')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Combo Makeup Kit">
+          <img src="https://images.meesho.com/images/products/477555123/dmqed_512.avif" alt="combo makeup kit">
+          <h3>Combo Makeup Kit</h3><p>₹332</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/hd-waterproof-makeup-kit/p/7wbnw3')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Women Lehanga">
+          <img src="https://images.meesho.com/images/products/432264976/ydvq5_512.avif" alt="women lehanga">
+          <h3>Women Lehanga</h3><p>₹591</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/aagyeyi-attractive-women-lehenga/p/75cxs')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Baby Frock">
+          <img src="https://images.meesho.com/images/products/605461262/iob1i_512.avif" alt="baby frock">
+          <h3>Baby Frock</h3><p>₹198</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/stylish-black-floral-frock/p/a0h4we')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Women Blouse">
+          <img src="https://images.meesho.com/images/products/297401480/ktchn_512.avif" alt="women blouse">
+          <h3>Women Blouse</h3><p>₹258</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/latest-women-blouses/p/4x2cg8')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Neck Chain">
+          <img src="https://images.meesho.com/images/products/599539900/tw6qb_512.avif" alt="neack chain">
+          <h3>Neck Chain</h3><p>₹140</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/jewellery-set/p/9wy7y4')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Earring">
+          <img src="https://images.meesho.com/images/products/477545441/65wxf_512.avif" alt="earring">
+          <h3>Earring</h3><p>₹104</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/purple-drop-earrings/p/7wbgf5')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Hand Bag">
+          <img src="https://images.meesho.com/images/products/477480366/8bpii_512.avif" alt="hand bag">
+          <h3>Hand Bag</h3><p>₹214</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/trendy-handbag/p/7wa27')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Elegant Bangle">
+          <img src="https://images.meesho.com/images/products/426789362/wxwbu_512.avif" alt="Elegant Bangle">
+          <h3>Elegant Bangle</h3><p>₹372</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/bracelet-bangles/p/723ks2')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Comfortable Slippers">
+          <img src="https://images.meesho.com/images/products/548250219/rtbzd_512.avif" alt="Comfortable Slippers">
+          <h3>Comfortable Slippers</h3><p>₹193</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/flat-slippers/p/92ewkr')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Silk Saree">
+          <img src="https://images.meesho.com/images/products/75909961/g6sta_512.avif" alt="Silk Saree">
+          <h3>Silk Saree</h3><p>₹647</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/embroidered-saree/p/1970i1')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Cotton Saree">
+          <img src="https://images.meesho.com/images/products/554264834/v3pyy_512.avif" alt="Cotton Saree">
+          <h3>Cotton Saree</h3><p>₹466</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/cotton-saree/p/95zthe')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Trendy Shoes">
+          <img src="https://images.meesho.com/images/products/563006504/we0ql_512.avif" alt="Trendy Shoes">
+          <h3>Trendy Shoes</h3><p>₹510</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/mens-casual-shoes/p/9b76lk')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Smart Watch">
+          <img src="https://images.meesho.com/images/products/608191205/k6tjl_512.avif" alt="Smart Watch">
+          <h3>Smart Watch</h3><p>₹624</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/smartwatch/p/a23nc5')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+                <div class="card" data-title="Baby Frock">
+          <img src="https://images.meesho.com/images/products/605461262/iob1i_512.avif" alt="baby frock">
+          <h3>Baby Frock</h3><p>₹198</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/stylish-black-floral-frock/p/a0h4we')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Women Blouse">
+          <img src="https://images.meesho.com/images/products/297401480/ktchn_512.avif" alt="women blouse">
+          <h3>Women Blouse</h3><p>₹258</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/latest-women-blouses/p/4x2cg8')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Neck Chain">
+          <img src="https://images.meesho.com/images/products/599539900/tw6qb_512.avif" alt="neack chain">
+          <h3>Neck Chain</h3><p>₹140</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/jewellery-set/p/9wy7y4')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Earring">
+          <img src="https://images.meesho.com/images/products/477545441/65wxf_512.avif" alt="earring">
+          <h3>Earring</h3><p>₹104</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/purple-drop-earrings/p/7wbgf5')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Hand Bag">
+          <img src="https://images.meesho.com/images/products/477480366/8bpii_512.avif" alt="hand bag">
+          <h3>Hand Bag</h3><p>₹214</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/trendy-handbag/p/7wa27')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Elegant Bangle">
+          <img src="https://images.meesho.com/images/products/426789362/wxwbu_512.avif" alt="Elegant Bangle">
+          <h3>Elegant Bangle</h3><p>₹372</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/bracelet-bangles/p/723ks2')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Comfortable Slippers">
+          <img src="https://images.meesho.com/images/products/548250219/rtbzd_512.avif" alt="Comfortable Slippers">
+          <h3>Comfortable Slippers</h3><p>₹193</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/flat-slippers/p/92ewkr')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Silk Saree">
+          <img src="https://images.meesho.com/images/products/75909961/g6sta_512.avif" alt="Silk Saree">
+          <h3>Silk Saree</h3><p>₹647</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/embroidered-saree/p/1970i1')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+        <div class="card" data-title="Cotton Saree">
+          <img src="https://images.meesho.com/images/products/554264834/v3pyy_512.avif" alt="Cotton Saree">
+          <h3>Cotton Saree</h3><p>₹466</p>
+          <button class="btn buy" onclick="buyProduct('https://www.meesho.com/cotton-saree/p/95zthe')">Buy</button>
+          <button class="btn wishlist" onclick="toggleWishlist(this)">Wishlist</button>
+          <button class="btn addcart" onclick="addToCart(this)">Add</button>
+        </div>
+
+
+      </div>
+    </section>
+
+    <!--  About -->
+    <section id="about-page">
+      <h2>About Us</h2>
+      <p>This demo website shows product listings, wishlist, cart, and responsive pages like About, Service, and Contact.</p>
+    </section>
+
+    <!--  Services -->
+    <section id="service-page">
+      <h2>Our Services</h2>
+      <p>✔ Free Delivery</p>
+      <p>✔ Easy Return Policy</p>
+      <p>✔ 24/7 Support</p>
+    </section>
+
+    <!--  Cart -->
+    <section id="cart-page">
+      <h2>Your Cart</h2>
+      <ul id="cartList"></ul>
+      <p id="emptyCartMsg">Your cart is empty.</p>
+    </section>
+
+    <!--  Contact -->
+    <section id="contact-page">
+      <h2>Contact Us</h2>
+      <p>Email: support@meeshostyle.com</p>
+      <p>Phone: +91 98765 43210</p>
+      <p>Address: Chennai, Tamil Nadu, India</p>
+    </section>
+  </main>
+
+  <script>
+    let wishlistCount = 0;
+    let cartCount = 0;
+    let cartItems = [];
+
+    function showSection(sec) {
+      ['home','about-page','service-page','contact-page','cart-page']
+        .forEach(id => document.getElementById(id).style.display = 'none');
+      if (sec === 'home') document.getElementById('home').style.display = 'block';
+      if (sec === 'about') document.getElementById('about-page').style.display = 'block';
+      if (sec === 'service') document.getElementById('service-page').style.display = 'block';
+      if (sec === 'contact') document.getElementById('contact-page').style.display = 'block';
+      if (sec === 'cart') document.getElementById('cart-page').style.display = 'block';
+    }
+
+    function buyProduct(link) { window.open(link, "_blank"); }
+
+    function toggleWishlist(btn) {
+      const name = btn.closest('.card').querySelector('h3').innerText;
+      if (btn.innerText === "Wishlist") {
+        btn.innerText = "Remove";
+        btn.style.background = "#dc3545";
+        wishlistCount++;
+      } else {
+        btn.innerText = "Wishlist";
+        btn.style.background = "#ff69b4";
+        wishlistCount--;
+      }
+      document.getElementById("wishlistCount").innerText = "Wishlist: " + wishlistCount;
+    }
+
+    function addToCart(btn) {
+      const name = btn.closest('.card').querySelector('h3').innerText;
+      cartItems.push(name);
+      cartCount++;
+      document.getElementById("cartCount").innerText = "Cart: " + cartCount;
+      document.getElementById('cartList').innerHTML = cartItems.map(i => `<li>${i}</li>`).join('');
+      document.getElementById('emptyCartMsg').style.display = 'none';
+      btn.disabled = true;
+      btn.innerText = "Added";
+      btn.style.background = "#6c757d";
+    }
+
+    function filterProducts() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        card.style.display = title.includes(input) ? '' : 'none';
+      });
+    }
+
+    showSection('home');
+  </script>
+</body>
+</html>
